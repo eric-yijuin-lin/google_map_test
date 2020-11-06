@@ -1,4 +1,4 @@
-import { AddressComponent } from './auto-address/autocomplete-interface';
+import { AddressComponent, GooglePlaceSummary } from './auto-address/autocomplete-interface';
 import {
   Component,
   ViewChild,
@@ -9,7 +9,7 @@ import {
   Input,
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import {} from 'googlemaps';
+import { } from 'googlemaps';
 import { AutoAddressComponent } from './auto-address/auto-address.component';
 
 @Component({
@@ -18,27 +18,17 @@ import { AutoAddressComponent } from './auto-address/auto-address.component';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'AutoCompleteTest';
-  addressWithShortName: string;
-  addressWithLongName: string;
+  title = 'place search test';
+  placeInfoList: GooglePlaceSummary[];
 
   @ViewChild('tAutoAddress', { static: true })
   tAutoAddress: AutoAddressComponent;
 
-  constructor() {}
+  constructor() { }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
-  handlePlaceChange(e: AddressComponent[]): void {
-    console.log('handlePlaceChange', e);
-    this.addressWithShortName = '';
-    this.addressWithLongName = '';
-    for (const comp of e) {
-      this.addressWithShortName += comp.short_name + ', ';
-      this.addressWithLongName += comp.long_name + ', ';
-    }
-
-    console.log('short', this.addressWithShortName);
-    console.log('long', this.addressWithLongName);
+  handlePlaceChange(e: GooglePlaceSummary[]): void {
+    this.placeInfoList = e;
   }
 }

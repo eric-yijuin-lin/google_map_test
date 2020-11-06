@@ -11,7 +11,7 @@ import {
 @Component({
   selector: 'app-auto-address',
   templateUrl: './auto-address.component.html',
-  styleUrls: ['./auto-address.component.css'],
+  styleUrls: [],
 })
 export class AutoAddressComponent implements OnInit {
   @ViewChild('map', { static: true }) mapElement: any;
@@ -36,7 +36,7 @@ export class AutoAddressComponent implements OnInit {
     postal_code: 'short_name',
   };
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.initAutocomplete();
