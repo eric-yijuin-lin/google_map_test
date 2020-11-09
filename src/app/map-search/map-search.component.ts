@@ -10,11 +10,11 @@ import { AddressComponent, GooglePlaceSummary } from '../auto-address/autocomple
 
 
 @Component({
-  selector: 'app-search-term',
-  templateUrl: './search-term.component.html',
+  selector: 'app-map-search',
+  templateUrl: './map-search.component.html',
   styleUrls: []
 })
-export class SearchTermComponent implements OnInit {
+export class MapSearchComponent implements OnInit {
 
   @ViewChild('map', { static: true }) mapElement: any;
   @ViewChild('autoComplete', { static: true }) autoComplete: any;
