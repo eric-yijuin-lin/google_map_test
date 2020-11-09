@@ -6,7 +6,9 @@
 </head>
 
 <body>
-  <app-map-search (placeChanged)="handlePlaceChange($event)"></app-map-search>
+  <app-map-search [searchInputLabel]="'Address Search'" (placeChanged)=" handlePlaceChange($event)">
+  </app-map-search>
+
   <ng-container *ngFor="let place of placeInfoList">
     <h4>Formatted Address:</h4>
     <h4>{{place.formatted_address}}</h4>
