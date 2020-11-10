@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Place Autocomplete Address Form</title>
-</head>
-
-<body>
-  <app-map-search [searchInputLabel]="'Address Search'" (placeChanged)=" handlePlaceChange($event)">
+<h4>Place search without Map</h4>
+<div style="width: 60%;">
+  <span>Search Place</span>
+  <span style="padding-left: 10px;">(Powered by Google)</span>
+  <app-map-search [showMap]="false" (placeChanged)=" handlePlaceChange($event)">
   </app-map-search>
+</div>
 
+<div [style.display]="'hide'">
   <ng-container *ngFor="let place of placeInfoList">
     <h4>Formatted Address:</h4>
     <h4>{{place.formatted_address}}</h4>
@@ -18,6 +16,20 @@
     <p> Whole Object: </p>
     <p> {{place | json}} </p>
   </ng-container>
-</body>
+</div>
 
-</html>
+<br>
+
+<h4>Place search with Map</h4>
+<div style="width: 80%;">
+  <app-map-search [showMap]="true" [searchInputWidth]="'200px'" [searchInputAlign]="'BOTTOM_LEFT'">
+  </app-map-search>
+</div>
+<br>
+
+<h4>Place search with Map</h4>
+<div style="width: 100%; height: 600px;">
+  <app-map-search [showMap]="true" [searchInputWidth]="'600px'" [searchInputHeight]="'3em'">
+  </app-map-search>
+</div>
+<br>

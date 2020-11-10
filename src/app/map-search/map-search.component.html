@@ -1,12 +1,12 @@
-<p>search-term works!</p>
 <div id="locationField">
-  <label>{{searchInputLabel}}</label>
-  <input #autoComplete id="searchTermInput" placeholder="Enter your search term" type="text" />
+  <!-- <label>{{searchInputLabel}}</label> -->
+  <input #tSearchInput placeholder="Enter your search term" type="text" [style.width]="searchInputWidth" [style.margin.px]="5" [style.border-radius]="'5px'"
+    [style.height]="searchInputHeight"/>
 </div>
 
-<div>
+<!-- <div>
   <label>Show Google Map</label>
-  <input type="checkbox" [(ngModel)]="showMap">
-</div>
+  <input type="checkbox" [(ngModel)]="showMap" size="100">
+</div> -->
 
-<div id="map" style="height: 100%; min-height: 400px;" [style.display]="showMap ? 'block' : 'none'"></div>
+<div #tMapDiv style="height: 100%; min-height: 200px;" [style.display]="showMap ? 'block' : 'none'"></div>

@@ -1,4 +1,7 @@
-import { AddressComponent, GooglePlaceSummary } from './auto-address/autocomplete-interface';
+import {
+  AddressComponent,
+  GooglePlaceSummary,
+} from './auto-address/autocomplete-interface';
 import {
   Component,
   ViewChild,
@@ -9,7 +12,7 @@ import {
   Input,
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { } from 'googlemaps';
+import {} from 'googlemaps';
 import { AutoAddressComponent } from './auto-address/auto-address.component';
 
 @Component({
@@ -19,16 +22,16 @@ import { AutoAddressComponent } from './auto-address/auto-address.component';
 })
 export class AppComponent {
   title = 'place search test';
-  placeInfoList: GooglePlaceSummary[];
+  placeInfoList: any[];
 
   @ViewChild('tAutoAddress', { static: true })
   tAutoAddress: AutoAddressComponent;
 
-  constructor() { }
+  constructor() {}
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 
-  handlePlaceChange(e: GooglePlaceSummary[]): void {
+  handlePlaceChange(e: any[]): void {
     this.placeInfoList = e;
   }
 }

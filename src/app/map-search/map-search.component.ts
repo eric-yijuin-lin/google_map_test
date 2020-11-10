@@ -5,27 +5,40 @@ import {
   Input,
   Output,
   EventEmitter,
+  ElementRef,
 } from '@angular/core';
-import { AddressComponent, GooglePlaceSummary } from '../auto-address/autocomplete-interface';
-
+import {
+  AddressComponent,
+  GooglePlaceSummary,
+} from '../auto-address/autocomplete-interface';
 
 @Component({
   selector: 'app-map-search',
   templateUrl: './map-search.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class MapSearchComponent implements OnInit {
+  @ViewChild('tMapDiv', { static: true }) tMapDiv: ElementRef;
+  @ViewChild('tSearchInput', { static: true }) tSearchInput: ElementRef;
 
-  @ViewChild('map', { static: true }) mapElement: any;
-  @ViewChild('autoComplete', { static: true }) autoComplete: any;
-
-  @Input() searchInputLabel = 'Place Search';
+  // @Input() searchInputLabel = 'Place Search';
   @Input() showMap = false;
-  @Input() searchInputAlign: 'OUSTSIDE' | 'TOP_LEFT' | 'TOP_RIGHT' | 'TOP_CENTER'
-    | 'BOTTOM_LEFT' | 'BOTTOM_RIGHT' | 'BOTTOM_CENTER' = 'OUSTSIDE';
-  @Input() mapCenter: { lat: number, lng: number } = { lat: 37.378582, lng: -121.960788 }; // Ambarella US
+  @Input() searchInputWidth = '400px';
+  @Input() searchInputHeight = '20px';
+  @Input() searchInputAlign:
+    | 'OUSTSIDE'
+    | 'TOP_LEFT'
+    | 'TOP_RIGHT'
+    | 'TOP_CENTER'
+    | 'BOTTOM_LEFT'
+    | 'BOTTOM_RIGHT'
+    | 'BOTTOM_CENTER' = 'TOP_LEFT';
+  @Input() mapCenter: { lat: number; lng: number } = {
+    lat: 37.378582,
+    lng: -121.960788,
+  }; // Default center = Ambarella US
 
-  @Output() placeChanged = new EventEmitter<Array<GooglePlaceSummary>>();
+  @Output() placeChanged = new EventEmitter<Array<any>>();
 
   componentForm = {
     street_number: 'short_name',
@@ -39,16 +52,19 @@ export class MapSearchComponent implements OnInit {
   mapObj: google.maps.Map<HTMLElement>;
   searchBox: google.maps.places.SearchBox;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     console.log('map center', this.mapCenter);
+    console.log('aaa', this.tSearchInput.nativeElement);
+    console.log('bbb', this.tSearchInput.nativeElement as HTMLInputElement);
     this.initAutocomplete();
   }
 
   initAutocomplete(): void {
     this.mapObj = new google.maps.Map(
-      document.getElementById('map') as HTMLElement,
+      // document.getElementById('map') as HTMLElement,
+      this.tMapDiv.nativeElement as HTMLElement,
       {
         center: this.mapCenter,
         zoom: 13,
@@ -61,21 +77,22 @@ export class MapSearchComponent implements OnInit {
 
     // Bias the SearchBox results towards current map's viewport.
     this.mapObj.addListener('bounds_changed', () => {
-      this.searchBox.setBounds(this.mapObj.getBounds() as google.maps.LatLngBounds);
+      this.searchBox.setBounds(
+        this.mapObj.getBounds() as google.maps.LatLngBounds
+      );
     });
 
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
-    this.searchBox.addListener('places_changed', () => this.placeChangedCallback());
+    this.searchBox.addListener('places_changed', () =>
+      this.placeChangedCallback()
+    );
   }
 
   private setSearchInputAlign() {
-    const input = document.getElementById('searchTermInput') as HTMLInputElement;
+    // const input = document.getElementById('searchTermInput') as HTMLInputElement;
+    const input = this.tSearchInput.nativeElement as HTMLInputElement;
     this.searchBox = new google.maps.places.SearchBox(input);
-
-    if (this.searchInputAlign !== 'OUSTSIDE') {
-      this.searchInputLabel = '';
-    }
 
     switch (this.searchInputAlign) {
       case 'OUSTSIDE':
@@ -87,18 +104,27 @@ export class MapSearchComponent implements OnInit {
         this.mapObj.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
         break;
       case 'TOP_CENTER':
-        this.mapObj.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+        this.mapObj.controls[google.maps.ControlPosition.TOP_CENTER].push(
+          input
+        );
         break;
       case 'BOTTOM_LEFT':
-        this.mapObj.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(input);
+        this.mapObj.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(
+          input
+        );
         break;
       case 'BOTTOM_RIGHT':
-        this.mapObj.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(input);
+        this.mapObj.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(
+          input
+        );
         break;
       case 'BOTTOM_CENTER':
-        this.mapObj.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(input);
+        this.mapObj.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
+          input
+        );
         break;
       default:
+        this.mapObj.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
         break;
     }
   }
@@ -151,17 +177,6 @@ export class MapSearchComponent implements OnInit {
     });
     this.mapObj.fitBounds(bounds);
 
-    // emit place info for parent components
-    const placeSumarry = places.map(x => {
-      const detail: GooglePlaceSummary = {
-        address_components: x.address_components,
-        adr_address: x.adr_address,
-        formatted_address: x.formatted_address,
-        name: x.name,
-        place_id: x.place_id,
-      };
-      return detail;
-    });
-    this.placeChanged.emit(placeSumarry);
+    this.placeChanged.emit(places);
   }
 }
